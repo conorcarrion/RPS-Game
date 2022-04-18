@@ -8,7 +8,6 @@ import numpy as np
 from numpy import argmax
 import random
 import time
-from collections import Counter
 
 # Camera and variable setup
 model = load_model('keras_model.h5')
@@ -21,7 +20,10 @@ bot_choice = ''
 user_choice = ''
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-#weapon counter
+
+# Function list
+
+# Weapon counter
 def most_frequent(list):
     counter = 0
     num = list[0]
@@ -33,50 +35,12 @@ def most_frequent(list):
  
     return num
 
-# Where the magic happens
-print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON!')
-count = 5
-while True: 
-    ret, frame = cap.read()
-    resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
-    image_np = np.array(resized_frame)
-    normalized_image = (image_np.astype(np.float32) / 127.0) - 1
-    # Normalize the image
-    data[0] = normalized_image
-    prediction = model.predict(data)
-    cv2.imshow('frame', frame)
-
-    # Model prediction into class
-    index = argmax(prediction)
-    # Append prediction to a list
-    weaponguess.append(userweapon[index])
-    while count >= 1:
-        time.sleep(1)
-        count = count - 1
-    if count == 0:
-        bot_choice = random.choice(botweapon)
-        user_choice = most_frequent(weaponguess) 
-        print(f'You have chosen the way of the {user_choice}! ')
-        break
-    
-    # print(prediction)
-    # print(weapon[index])
-
-    # Press q to close the window
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# After the loop release the cap object
-cap.release()
-# Destroy all the windows
-cv2.destroyAllWindows()
-               
-#run countdown until show of hand
+# Countdown
 def countdown():
     print('Who wins this battle? ')
     time.sleep(3)
 
-#resolution of choices
+# Resolution
 def whowon():
     print(f'Bot chose {bot_choice}! ')
     if bot_choice == 'rock':
@@ -114,9 +78,45 @@ def whowon():
         if user_choice == 'scissors':
             print('It\'s a draw!')
     if user_choice == 'nothing':
-        print('You failed to raise your weapon, shame!')
-            
+        print('You failed to raise your weapon, you shameful coward!')
 
+# Begin fight, initialise camera
+print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON!')
+count = 5
+while count >= 1: 
+    ret, frame = cap.read()
+    resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
+    image_np = np.array(resized_frame)
+    normalized_image = (image_np.astype(np.float32) / 127.0) - 1
+    # Normalize the image
+    data[0] = normalized_image
+    prediction = model.predict(data)
+    cv2.imshow('frame', frame)
+
+    # Model prediction into class
+    index = argmax(prediction)
+    # Append prediction to a list
+    weaponguess.append(userweapon[index])
+
+    time.sleep(1)
+    count = count - 1
+
+    # print(prediction)
+    # print(weapon[index])
+
+    # Press q to close the window
+    # if cv2.waitKey(1) & 0xFF == ord('q'):
+    #     break
+
+# After the loop release the cap object
+cap.release()
+# Destroy all the windows
+cv2.destroyAllWindows()
+
+# Set choices
+bot_choice = random.choice(botweapon)
+user_choice = most_frequent(weaponguess) 
+print(f'You have chosen the way of the {user_choice}! ')          
 
 countdown()
 whowon()
