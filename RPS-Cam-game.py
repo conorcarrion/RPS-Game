@@ -18,6 +18,8 @@ userweapon = ['nothing','rock', 'paper', 'scissors']
 weaponguess = []
 bot_choice = ''
 user_choice = ''
+currentweapon = ''
+
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
@@ -37,8 +39,12 @@ def most_frequent(list):
 
 # Countdown
 def countdown():
-    print('Who wins this battle? ')
-    time.sleep(3)
+    print('Who will emerge victorious? ')
+    count = 3
+    while count >= 1:
+        print(count)
+        time.sleep(1)
+        count = count - 1
 
 # Resolution
 def whowon():
@@ -96,7 +102,10 @@ while True:
     index = argmax(prediction)
 
     # print(prediction)
-    print(userweapon[index])
+    
+    if not currentweapon == userweapon[index]:
+        currentweapon = userweapon[index]
+        print(f'You wish to pick the {currentweapon}?')
 
     # Press q to close the window
     if cv2.waitKey(1) & 0xFF == ord('q'):
