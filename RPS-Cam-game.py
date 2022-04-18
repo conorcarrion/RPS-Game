@@ -81,9 +81,8 @@ def whowon():
         print('You failed to raise your weapon, you shameful coward!')
 
 # Begin fight, initialise camera
-print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON!')
-count = 5
-while count >= 1: 
+print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON! PRESS \'Q\' TO FIGHT')
+while True: 
     ret, frame = cap.read()
     resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
     image_np = np.array(resized_frame)
@@ -95,18 +94,13 @@ while count >= 1:
 
     # Model prediction into class
     index = argmax(prediction)
-    # Append prediction to a list
-    weaponguess.append(userweapon[index])
-
-    time.sleep(1)
-    count = count - 1
 
     # print(prediction)
-    print(weapon[index])
+    print(userweapon[index])
 
     # Press q to close the window
-    # if cv2.waitKey(1) & 0xFF == ord('q'):
-    #     break
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 # After the loop release the cap object
 cap.release()
@@ -115,7 +109,7 @@ cv2.destroyAllWindows()
 
 # Set choices
 bot_choice = random.choice(botweapon)
-user_choice = most_frequent(weaponguess) 
+user_choice = userweapon[index]
 print(f'You have chosen the way of the {user_choice}! ')          
 
 countdown()
