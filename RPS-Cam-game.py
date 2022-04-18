@@ -18,7 +18,7 @@ userweapon = ['nothing','rock', 'paper', 'scissors']
 weaponguess = []
 bot_choice = ''
 user_choice = ''
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 # Function list
@@ -102,7 +102,7 @@ while count >= 1:
     count = count - 1
 
     # print(prediction)
-    # print(weapon[index])
+    print(weapon[index])
 
     # Press q to close the window
     # if cv2.waitKey(1) & 0xFF == ord('q'):
