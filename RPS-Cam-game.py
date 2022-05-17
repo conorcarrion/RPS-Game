@@ -2,7 +2,6 @@
 
 # Imports
 import cv2
-import os
 from keras.models import load_model
 import numpy as np
 from numpy import argmax
@@ -15,112 +14,135 @@ cap = cv2.VideoCapture(0)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 botweapon = ['rock', 'paper', 'scissors']
 userweapon = ['nothing','rock', 'paper', 'scissors']
-weaponguess = []
+user_score = 0
+computer_score = 0
 bot_choice = ''
 user_choice = ''
-currentweapon = ''
-
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
 
 # Function list
 
-# Weapon counter
-def most_frequent(list):
-    counter = 0
-    num = list[0]
-    for i in list:
-        curr_frequency = list.count(i)
-        if(curr_frequency> counter):
-            counter = curr_frequency
-            num = i
- 
-    return num
+# Bot weapon
+def get_computer_choice():
+    bot_choice = random.choice(botweapon)
+    return bot_choice
 
 # Countdown
 def countdown():
+    print(f'Bot chose {bot_choice}! ')
     print('Who will emerge victorious? ')
     count = 3
     while count >= 1:
         print(count)
         time.sleep(1)
-        count = count - 1
+        count -= 1
 
-# Resolution
-def whowon():
-    print(f'Bot chose {bot_choice}! ')
+def who_won_round():
+    #decision making
     if bot_choice == 'rock':
         if user_choice == 'paper':
-            print('User won!')
+            user_score += 1
+            print('User won! ')
             
 
         if user_choice == 'scissors':
-            print('Bot won!')
+            computer_score += 1
+            print('Bot won! ')
             
         if user_choice == 'rock':
-            print('It\'s a draw!')
+            print('It\'s a draw! ')
             
 
     if bot_choice == 'paper':
         if user_choice == 'scissors':
-            print('User won!')
+            user_score += 1
+            print('User won! ')
             
 
         if user_choice == 'rock':
-            print('Bot won!')
+            computer_score += 1
+            print('Bot won! ')
             
         if user_choice == 'paper':
-            print('It\'s a draw!')
+            print('It\'s a draw! ')
             
 
     if bot_choice == 'scissors':
         if user_choice == 'rock':
-            print('User won!')
+            user_score += 1
+            print('User won! ')
             
 
         if user_choice == 'paper':
-            print('Bot won!')
+            computer_score += 1
+            print('Bot won! ')
             
         if user_choice == 'scissors':
-            print('It\'s a draw!')
-    if user_choice == 'nothing':
-        print('You failed to raise your weapon, you shameful coward!')
+            print('It\'s a draw! ')
 
-# Begin fight, initialise camera
-print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON! PRESS \'Q\' TO FIGHT')
-while True: 
-    ret, frame = cap.read()
-    resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
-    image_np = np.array(resized_frame)
-    normalized_image = (image_np.astype(np.float32) / 127.0) - 1
-    # Normalize the image
-    data[0] = normalized_image
-    prediction = model.predict(data)
-    cv2.imshow('frame', frame)
+    if user_choice == 'nothing ':
+        computer_score += 1
+        print('You failed to raise your weapon, you shameful coward! ')
 
-    # Model prediction into class
-    index = argmax(prediction)
 
-    # print(prediction)
+def get_user_choice():
+    user_choice = ''
+    print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON! PRESS \'Q\' TO FIGHT ')
+    while True: 
+        ret, frame = cap.read()
+        resized_frame = cv2.resize(frame, (224, 224), interpolation = cv2.INTER_AREA)
+        image_np = np.array(resized_frame)
+        normalized_image = (image_np.astype(np.float32) / 127.0) - 1
+        # Normalize the image
+        data[0] = normalized_image
+        prediction = model.predict(data)
+        cv2.imshow('frame', frame)
+
+        # fetch index of
+        index = argmax(prediction)
+
+        # print(prediction)
+        
+        if not user_choice == userweapon[index]:
+            user_choice = userweapon[index]
+            print(f'You wish to pick the {user_choice}?')
+
+        # Press q to close the window
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # After the loop release the cap object
+    cap.release()
+    # Destroy all the windows
+    cv2.destroyAllWindows()
+    print(f'You have chosen the way of the {user_choice}! ')          
+    return 
+
+
     
-    if not currentweapon == userweapon[index]:
-        currentweapon = userweapon[index]
-        print(f'You wish to pick the {currentweapon}?')
+    
 
-    # Press q to close the window
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+def resolve_winner():
+    if user_score == 2:
+        print("User has won 2 rounds, they are declared winner!")
 
-# After the loop release the cap object
-cap.release()
-# Destroy all the windows
-cv2.destroyAllWindows()
+    if computer_score == 2:
+        print("The Computer has won 2 rounds, they are declared winner!")
 
-# Set choices
-bot_choice = random.choice(botweapon)
-user_choice = userweapon[index]
-print(f'You have chosen the way of the {user_choice}! ')          
+# Resolution
+def play_a_round():
+    get_computer_choice()
+    get_user_choice()
+    countdown()
+    who_won_round()
+    
 
-countdown()
-whowon()
+def play():
+        
+    while user_score or computer_score <= 2:
+        play_a_round()
+    
+    resolve_winner()
+    
+    return
 
+play()
