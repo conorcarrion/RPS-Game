@@ -115,11 +115,9 @@ def get_user_choice():
     # Destroy all the windows
     cv2.destroyAllWindows()
     print(f'You have chosen the way of the {user_choice}! ')          
-    return 
+    return user_choice
 
 
-    
-    
 
 def resolve_winner():
     if user_score == 2:
