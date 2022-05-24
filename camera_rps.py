@@ -2,6 +2,7 @@
 
 # Imports
 import os
+from tabnanny import verbose
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import cv2
 from keras.models import load_model
@@ -12,6 +13,7 @@ import time
 
 # Camera and variable setup
 model = load_model('keras_model.h5')
+
 cap = cv2.VideoCapture(0)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 botweapon = ['rock', 'paper', 'scissors']
@@ -28,7 +30,7 @@ def get_bot_choice():
 # User gets ~3 seconds to display gesture 
 def get_user_choice():
     round_time = time.time()
-    print(round_time)
+    
     print('PREPARE TO FIGHT! DISPLAY YOUR WEAPON! ')
     
     while True: 
@@ -39,7 +41,7 @@ def get_user_choice():
         
         # Normalize the image
         data[0] = normalized_image
-        prediction = model.predict(data)
+        prediction = model.predict(data, verbose=0)
         cv2.imshow('frame', frame)
 
         index = np.argmax(prediction)
@@ -123,8 +125,10 @@ def match_end():
 # Execution of program
 def play_a_round(user_score, bot_score):
     print('A new round has started!' )
+    time.sleep(1)
     user_choice = get_user_choice()
     bot_choice = get_bot_choice()
+    time.sleep(1)
     user_score, bot_score = who_won_round(bot_choice, user_choice, user_score, bot_score)
     return user_score, bot_score
     
@@ -133,14 +137,19 @@ def play():
     print('Welcome to Rock, Paper, Scissors by Conor Quinn!')
     time.sleep(1)
     play_a_round(user_score, bot_score)
-    time.sleep(2)
+    time.sleep(1)
+    print(f'{user_score}, {bot_score}')
     play_a_round(user_score, bot_score)
-    time.sleep(2)
+    time.sleep(1)
+    print(f'{user_score}, {bot_score}')
     play_a_round(user_score, bot_score)
+    time.sleep(1)
+    print(f'{user_score}, {bot_score}')
     resolve_match_winner(user_score, bot_score)
-    # After the loop release the cap object
+    time.sleep(1)
+    # After the loop release the cap object (whatever that means)
     cap.release()
-    # Destroy all the windows
+    # Destroy all the windows (there's only 1)
     cv2.destroyAllWindows()
     match_end()
     
