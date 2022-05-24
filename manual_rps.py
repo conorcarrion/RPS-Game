@@ -1,22 +1,24 @@
 import random
 import time
+
 #Intro
 def battlecommences():
     print('PREPARE TO FIGHT! ')
     time.sleep(1)
 
 #Bot and User choices    
-def choices():
-    global weapon
-    weapon = ('rock', 'paper', 'scissors')
-    global bot_choice
-    bot_choice = random.choice(weapon)
-    global user_choice
+def get_user_choice():
     user_choice = input('Select your weapon warrior: rock, paper or scissors! ')
+    return user_choice
+
+def get_bot_choice():
+    weapon = ('rock', 'paper', 'scissors')
+    bot_choice = random.choice(weapon)
+    return bot_choice
 
 #run countdown until show of hand
 def countdown():
-    print('Who wins this battle? ')
+    print('Who will win this battle? ')
     count = 3
     while count >= 1:
         print(count)
@@ -24,7 +26,7 @@ def countdown():
         count = count - 1
 
 #resolution of choices
-def whowon():
+def get_winner(bot_choice, user_choice):
     print(f'Bot chose {bot_choice}! ')
     if bot_choice == 'rock':
         if user_choice == 'paper':
@@ -38,7 +40,7 @@ def whowon():
             print('It\'s a draw!')
             
 
-    if bot_choice == 'paper':
+    elif bot_choice == 'paper':
         if user_choice == 'scissors':
             print('User won!')
             
@@ -50,7 +52,7 @@ def whowon():
             print('It\'s a draw!')
             
 
-    if bot_choice == 'scissors':
+    elif bot_choice == 'scissors':
         if user_choice == 'rock':
             print('User won!')
             
@@ -60,13 +62,16 @@ def whowon():
             
         if user_choice == 'scissors':
             print('It\'s a draw!')
-            
+    else:
+        print('You raised an invalid weapon, you shameful coward!')
+
 #sequence the program
-def rockpaperscissors():
+def play():
     battlecommences()
-    choices()
+    bot_choice = get_bot_choice()
+    user_choice = get_user_choice()
     countdown()
-    whowon()
+    get_winner(bot_choice, user_choice)
 
 #run the game
-rockpaperscissors()
+play()
