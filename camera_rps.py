@@ -2,7 +2,6 @@
 
 # Imports
 import os
-from tabnanny import verbose
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import cv2
 from keras.models import load_model
@@ -129,22 +128,23 @@ def play_a_round(user_score, bot_score):
     user_choice = get_user_choice()
     bot_choice = get_bot_choice()
     time.sleep(1)
-    user_score, bot_score = who_won_round(bot_choice, user_choice, user_score, bot_score)
+    who_won_round(bot_choice, user_choice, user_score, bot_score)
     return user_score, bot_score
     
 def play():
-    user_score, bot_score = 0, 0 
+    user_score = 0
+    bot_score = 0
     print('Welcome to Rock, Paper, Scissors by Conor Quinn!')
     time.sleep(1)
     play_a_round(user_score, bot_score)
     time.sleep(1)
-    print(f'{user_score}, {bot_score}')
+    print(f'User - {user_score}, {bot_score} - Bot')
     play_a_round(user_score, bot_score)
     time.sleep(1)
-    print(f'{user_score}, {bot_score}')
+    print(f'User - {user_score}, {bot_score} - Bot')
     play_a_round(user_score, bot_score)
     time.sleep(1)
-    print(f'{user_score}, {bot_score}')
+    print(f'User - {user_score}, {bot_score} - Bot')
     resolve_match_winner(user_score, bot_score)
     time.sleep(1)
     # After the loop release the cap object (whatever that means)
