@@ -1,3 +1,5 @@
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
 import cv2
 from keras.models import load_model
 import numpy as np
@@ -11,7 +13,7 @@ while True:
     image_np = np.array(resized_frame)
     normalized_image = (image_np.astype(np.float32) / 127.0) - 1 # Normalize the image
     data[0] = normalized_image
-    prediction = model.predict(data)
+    prediction = model.predict(data, verbose=0)
     cv2.imshow('frame', frame)
     # Press q to close the window
     print(prediction)
