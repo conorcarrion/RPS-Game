@@ -12,7 +12,7 @@ I set up my virtual environment with conda, running python 3.8 in vscode. I impo
 
 Using code to run the opencv library provided by the AIcore team, I tested my Teachable Machine model to ensure the gestures I made were being recognised by the model and output by the prediction function.
 
-'''python
+```
 import cv2
 from keras.models import load_model
 import numpy as np
@@ -37,15 +37,15 @@ while True:
 cap.release()
 # Destroy all the windows
 cv2.destroyAllWindows()
-'''
+```
 
 This code uses opencv (open computer vision) for the webcam input, tensorflow (keras) for interpretation of the teachable machine model and numpy to create an array with the image. 
 print(prediction) prints a list(?) of the models certainty that the current webcam input matches either of the 4 gestures it was trained on: 
 
-'''bash
+```
 Nothing	Rock		Paper		Scissors
 [[1.6709046e-05 3.2001196e-07 1.0888249e-06 9.9998188e-01]]
-'''
+```
 (labels not present in the terminal, added here for clarity)
 
 In the case above I was raising the scissors gesture, and the prediction is 9.9998188 out of 10 certain that I am displaying the scissors gesture. By testing this on all 4 gestures I was able to see that my model was correctly predicting the gesture I was showing it.
@@ -54,7 +54,7 @@ In the case above I was raising the scissors gesture, and the prediction is 9.99
 
 I used Python3 to code a game of Rock-Paper-Scissors. I split the program into 4 components: the announcement of the start of the battle, an input for the user to choose their weapon, an exciting countdown followed by resolution of the choices to decide the victor. I used an explicit series of 'if' statements to resolve the game. While not concise, this presents little ambiguity in the program's execution and provides legibility for future changes.
 
-'''python
+```
 import random
 import time
 
@@ -132,9 +132,9 @@ def play():
 
 #run the game
 play()
-'''
+```
 
-'''bash
+```
 (camera_rps) ../Rock Paper Scissors$ python3 manual_rps.py 
 PREPARE TO FIGHT! 
 Select your weapon warrior: rock, paper or scissors! rock
@@ -144,7 +144,7 @@ Who will win this battle?
 1
 Bot chose scissors! 
 User won!
-'''
+```
 The input 'rock' was typed into the terminal in response to the input() function.
 
 ## Milestone 4 - Use the camera to play Rock-Paper-Scissors
@@ -155,12 +155,12 @@ An initial challenge was coding the RPS game around the While loop which runs th
 
 I decided to simply use a timer and a snapshot method for simplicity and because I felt my model was accurate and reliable. I tried various methods to run the entire game inside the While loop creating the camera output but I struggled to do this for multiple rounds of the game. Later on I found this was probably due to my misplacement of:
 
-'''python
+```
 # After the loop release the cap object 
     cap.release()
     # Destroy all the windows (there's only 1)
     cv2.destroyAllWindows()
- '''
+```
  ... which I should have placed at the end of the match instead.
  
 So I put the while loop controlling the camera into the get_user_choice() function so that the game only runs the while loop for 6 seconds to get a snapshot of the user choice. The image freezes between rounds.
