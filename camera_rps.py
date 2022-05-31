@@ -131,7 +131,7 @@ def play():
 
         if result == 'bot':
             bot_score += 1
-        
+        print(f'######>{user_score}< Player : Bot >{bot_score}<########' )
     if user_score == 2:
         print("You have won 2 rounds, you are the winner! ")
 
