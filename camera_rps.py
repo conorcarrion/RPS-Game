@@ -58,99 +58,91 @@ def get_user_choice():
     
     
 # Takes the user and bot choices, decides who won and adds the outcome to the score
-def who_won_round(bot_choice, user_choice, user_score, bot_score):
+def who_won_round(bot_choice, user_choice):
     #decision making
     print(f'Bot chose {bot_choice}! ')
     if bot_choice == 'rock':
         if user_choice == 'paper':
-            user_score += 1
             print('You won! ')
-            
+            return 'user'
 
         if user_choice == 'scissors':
-            bot_score += 1
             print('Bot won! ')
+            return 'bot'
             
         if user_choice == 'rock':
             print('It\'s a draw! ')
+            return 'draw'
             
 
     if bot_choice == 'paper':
         if user_choice == 'scissors':
-            user_score += 1
             print('You won! ')
+            return 'user'
             
 
         if user_choice == 'rock':
-            bot_score += 1
             print('Bot won! ')
+            return 'bot'
             
         if user_choice == 'paper':
             print('It\'s a draw! ')
+            return 'draw'
             
 
     if bot_choice == 'scissors':
         if user_choice == 'rock':
-            user_score += 1
             print('You won! ')
+            return 'user'
             
 
         if user_choice == 'paper':
-            bot_score += 1
             print('Bot won! ')
+            return 'bot'
             
         if user_choice == 'scissors':
             print('It\'s a draw! ')
+            return 'draw'
 
     if user_choice == 'nothing':
-        bot_score += 1
         print('You failed to raise your weapon, you shameful coward! ')
-    return user_score, bot_score
-
-# Once someone has 2 points, the match is won (Bo3 format)
-def resolve_match_winner(user_score, bot_score):
-    if user_score == 2:
-        print("You have won 2 rounds, you are the winner! ")
-
-    if bot_score == 2:
-        print("Bot has won 2 rounds, you lose! ")
-
-   
-# Outro statement showing good will
-def match_end():
-    print("ggwp, re? ")
-    
-
-# Execution of program
-def play_a_round(user_score, bot_score):
+        return 'bot'
+ 
+# Flow of a round
+def play_a_round():
     print('A new round has started!' )
     time.sleep(1)
     user_choice = get_user_choice()
     bot_choice = get_bot_choice()
     time.sleep(1)
-    who_won_round(bot_choice, user_choice, user_score, bot_score)
-    return user_score, bot_score
-    
+    result = who_won_round(bot_choice, user_choice)
+    return result
+
+# Run the match    
 def play():
     user_score = 0
     bot_score = 0
     print('Welcome to Rock, Paper, Scissors by Conor Quinn!')
     time.sleep(1)
-    user_score, bot_score = play_a_round(user_score, bot_score)
-    time.sleep(2)
-    print(f'User - {user_score}, {bot_score} - Bot')
-    user_score, bot_score = play_a_round(user_score, bot_score)
-    time.sleep(2)
-    print(f'User - {user_score}, {bot_score} - Bot')
-    user_score, bot_score = play_a_round(user_score, bot_score)
-    time.sleep(2)
-    print(f'User - {user_score}, {bot_score} - Bot')
-    resolve_match_winner(user_score, bot_score)
+    while not (user_score == 2 or bot_score == 2):
+        result = play_a_round()
+        if result == 'user':
+            user_score += 1
+
+        if result == 'bot':
+            bot_score += 1
+        
+    if user_score == 2:
+        print("You have won 2 rounds, you are the winner! ")
+
+    if bot_score == 2:
+        print("Bot has won 2 rounds, you lose! ")
+    
     time.sleep(2)
     # After the loop release the cap object 
     cap.release()
     # Destroy all the windows 
     cv2.destroyAllWindows()
-    match_end()
+    print('ggwp, re?')
     
 play()
