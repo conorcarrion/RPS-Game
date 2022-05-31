@@ -70,7 +70,7 @@ I had import and library issues with virtual environments and branches. My attem
 
 This was my first time creating a program from scratch without detailed step by step guidance, as well as my first time setting up ubuntu dual boot, vscode, pip & conda, using virtual environments, git, github and using the terminal. 
 
-
+I am not familiar with object oriented programming. I did make an OOP version of my code but I unfortunately did not think I was doing it correctly and deleted it without ever committing it. Later my developer friend sent me an example for rock paper scissors with OOP. It is `rps-oop-example.py`. I learnt much from this and want to try my hand at a python project using OOP in the future. 
 
 
 
