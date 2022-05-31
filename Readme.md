@@ -54,123 +54,21 @@ In the case above I was raising the scissors gesture, and the prediction is 9.99
 
 I used Python3 to code a game of Rock-Paper-Scissors. I split the program into 4 components: the announcement of the start of the battle, an input for the user to choose their weapon, an exciting countdown followed by resolution of the choices to decide the victor. I used an explicit series of 'if' statements to resolve the game. While not concise, this presents little ambiguity in the program's execution and provides legibility for future changes.
 
-```
-import random
-import time
-
-#Intro
-def battlecommences():
-    print('PREPARE TO FIGHT! ')
-    time.sleep(1)
-
-#Bot and User choices    
-def get_user_choice():
-    user_choice = input('Select your weapon warrior: rock, paper or scissors! ')
-    return user_choice
-
-def get_bot_choice():
-    weapon = ('rock', 'paper', 'scissors')
-    bot_choice = random.choice(weapon)
-    return bot_choice
-
-#run countdown until show of hand
-def countdown():
-    print('Who will win this battle? ')
-    count = 3
-    while count >= 1:
-        print(count)
-        time.sleep(1)
-        count = count - 1
-
-#resolution of choices
-def get_winner(bot_choice, user_choice):
-    print(f'Bot chose {bot_choice}! ')
-    if bot_choice == 'rock':
-        if user_choice == 'paper':
-            print('User won!')
-            
-
-        if user_choice == 'scissors':
-            print('Bot won!')
-            
-        if user_choice == 'rock':
-            print('It\'s a draw!')
-            
-
-    elif bot_choice == 'paper':
-        if user_choice == 'scissors':
-            print('User won!')
-            
-
-        if user_choice == 'rock':
-            print('Bot won!')
-            
-        if user_choice == 'paper':
-            print('It\'s a draw!')
-            
-
-    elif bot_choice == 'scissors':
-        if user_choice == 'rock':
-            print('User won!')
-            
-
-        if user_choice == 'paper':
-            print('Bot won!')
-            
-        if user_choice == 'scissors':
-            print('It\'s a draw!')
-    else:
-        print('You raised an invalid weapon, you shameful coward!')
-
-#sequence the program
-def play():
-    battlecommences()
-    bot_choice = get_bot_choice()
-    user_choice = get_user_choice()
-    countdown()
-    get_winner(bot_choice, user_choice)
-
-#run the game
-play()
-```
-
-```
-(camera_rps) ../Rock Paper Scissors$ python3 manual_rps.py 
-PREPARE TO FIGHT! 
-Select your weapon warrior: rock, paper or scissors! rock
-Who will win this battle? 
-3
-2
-1
-Bot chose scissors! 
-User won!
-```
-The input 'rock' was typed into the terminal in response to the input() function.
+The only input required is the user's choice which they type into the terminal in response to the input() function.
 
 ## Milestone 4 - Use the camera to play Rock-Paper-Scissors
 
-I integrated my teachable machine model into my Rock-Paper-Scissors (RPS) game. I faced several challenges getting it to work how I wanted. 
+I integrated my teachable machine model into my Rock-Paper-Scissors (RPS) game, using the camera input and OpenCV to see my gesture and tensorflow with the teachable machine model to predict my gesture. I then used numpy's argmax to convert the model prediction output into a string describing my gesture eg. scissors. I then integrated that into my `get_user_choice()` function. I then reworked the game to run multiple rounds, keeping score of those rounds and declaring a winner when a player has won 2 rounds.
 
 An initial challenge was coding the RPS game around the While loop which runs the camera interface. How should the user choice be made? After a certain period of time or by pressing a button? Should the output be a snapshot of the final prediction or the most common prediction from a recorded list?
 
-I decided to simply use a timer and a snapshot method for simplicity and because I felt my model was accurate and reliable. I tried various methods to run the entire game inside the While loop creating the camera output but I struggled to do this for multiple rounds of the game. Later on I found this was probably due to my misplacement of:
+I decided to simply use a timer and a snapshot method for simplicity and because I felt my model was accurate and reliable. I tried various methods to run the entire game inside the 'While loop' creating the camera output but I struggled to do this for multiple rounds of the game. I put the 'while loop' controlling the camera into the `get_user_choice()` function so that the game only runs the while loop for 6 seconds to get a snapshot of the user choice. The image freezes between rounds.
 
-```
-# After the loop release the cap object 
-    cap.release()
-    # Destroy all the windows (there's only 1)
-    cv2.destroyAllWindows()
-```
- ... which I should have placed at the end of the match instead.
- 
-So I put the while loop controlling the camera into the get_user_choice() function so that the game only runs the while loop for 6 seconds to get a snapshot of the user choice. The image freezes between rounds.
+I faced many problems with the architecture of the program: partially from not understanding what certain provided parts did, partially from not fully understanding any particular programming paradigm. 
 
-I faced many problems with the logic of the code, partially from not understanding what certain provided parts did, partially from import issues and library issues with virtual environments. My attempts to remove debugging information created issues of their own. 
+I had import and library issues with virtual environments and branches. My attempts to remove debugging information created issues of their own. 
 
-This was not just my first time creating a program from scratch without excess specific guidance, but also setting up ubuntu dual boot, vscode, pip & conda, using virtual environments, git, github, command line / bash. 
-
-My version of Rock-Paper-Scissors is fairly straight forward. Now I have better understanding of certain parts, I believe I could re-write it to keep the webcam input active the entire match. I could then add text to the image showing the score and various game messages instead of in the terminal. However I do feel the terminal adds some 90s charm to the game. I also would have to use time.time() instead of time.sleep() to create pauses in the game flow. 
-
+This was my first time creating a program from scratch without detailed step by step guidance, as well as my first time setting up ubuntu dual boot, vscode, pip & conda, using virtual environments, git, github and using the terminal. 
 
 
 
